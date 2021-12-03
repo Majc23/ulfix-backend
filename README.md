@@ -6,6 +6,7 @@ check the installation on the official page:
 https://docs.mongodb.com/manual/administration/install-community/
 https://apuntes.de/nodejs/instalacion-en-mac/#gsc.tab=0
 
+## Installation
 To get started please follow the steps below:
 
 - Install all project dependencies with `npm install` o `yarn install`
