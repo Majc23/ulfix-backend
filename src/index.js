@@ -8,18 +8,19 @@ const config = require('./utils/config');
 const cors = require('cors');
 
 const db = require('./utils/db')
-
+// extended sirve para poder leer objetos anidados en el body
 api.use(express.urlencoded({
   extended: true
 }));
 
+//entrada del curpo entrara un JSON
 api.use(express.json());
 
 api.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-api.use(cors());
+api.use(cors());// para bloquear 
 api.options('*', cors());
 
 try {
@@ -33,6 +34,7 @@ try {
     //console.log(error);
 }
 
+//para desencriptar el hash del login y ver si expiro  la seccion
 
 api.use(jwt({secret: config.secret, algorithms: ['HS256'],}).unless(function(req) {
   
@@ -69,3 +71,4 @@ process.on('SIGUSR2', async () => {
     console.info('SIGUSR2: Attempting to terminate');
     process.exit(0);
 });
+
