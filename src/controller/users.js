@@ -11,13 +11,13 @@ const createUser = async (request,response, next) =>{
         return next(new Error('409')); 
     }
     const user = new userModel(request.body);
-    user.save();
-
+    await user.save();
+    console.log(user);
     response.send(user);
 }
 
 const getUser = async( request, response, next) =>{
-    if(!request.user || request.user.id != request.params.id){
+    if(!request.user || request.user._id != request.params.userId){
         return next(new Error('403'));
     }
     const user = await userModel.findById(request.params.userId).select('-password');
@@ -32,7 +32,7 @@ const getUsers = async( request, response, next) =>{
     if(!request.user ){
         return next(new Error('403'));
     }
-    const users = await userModel.find().limit(20).skip(+request.params.page*20).select('-password');
+    const users = await userModel.find().limit(0).skip(+request.params.page).select('-password');
     const totalUsers = await userModel.count();
     response.send({users, totalUsers});
 }
@@ -45,6 +45,8 @@ const upDateUser = async ( request, response, next) =>{
     if(!user){
         return next(new Error('404'));
     }
+    console.log(request.body);
+
     if(request.body.name){
         user.name = request.body.name;
     }
@@ -60,10 +62,11 @@ const upDateUser = async ( request, response, next) =>{
 }
 
 const deleteUser = async ( request, response, next) =>{
-    if(!request.user || request.user.id != request.params.id){
+    console.log(request.user);
+    if(!request.user || request.user._id != request.params.userId){
         return next(new Error('403'));
     }
-    await userModel.deleteOne({_id:request.params.id})
+    await userModel.deleteOne({_id:request.params.userId})
     response.send();
 }
 
